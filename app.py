@@ -48,6 +48,10 @@ def get_cred_by_app(app):
 def remove_app_cred(app):
     with conn:
         c.execute("DELETE from pwd_mgr WHERE app_name = :name", {'name': app})
+        
+def update_password(app,new_pass_word):
+    with conn:
+        c.execute("update pwd_mgr set pass_word = :pass where app_name = :name", {'name': app, 'pass': new_pass_word})
 
 
 st.title("Password Manager 🔐")
@@ -60,7 +64,7 @@ c.execute("select app_name from pwd_mgr")
 app_names = c.fetchall()
 app_names = [i[0] for i in app_names]
 
-radio_option = st.sidebar.radio("Menu", options=["Home", "Add New", "Delete Credential"])
+radio_option = st.sidebar.radio("Menu", options=["Home", "Add Account", "Update Password", "Delete Account"])
 
 if radio_option=="Home":    
     st.subheader("Find Credential 🔎")  
@@ -86,9 +90,9 @@ if radio_option=="Home":
             st.text(f"URL")
             st.code(f"{cred[4]}", language="python")
     else:
-        st.info(' Database is Empty. Go to Create to add Data ⬅️', icon="ℹ️")
+        st.info('Database is Empty. Go to Add Account to add Data ⬅️', icon="ℹ️")
 
-if radio_option=="Add New": 
+if radio_option=="Add Account": 
     st.subheader("Add New Credential 🗝️")
     st.markdown("####")    
     app_name = st.text_input('Application 📱', 'Twitter')
@@ -106,8 +110,31 @@ if radio_option=="Add New":
             st.warning('Something went wrong! Try Again.', icon="⚠️")
     st.markdown("####")
     st.info(f"Available Credentials in Database: {db_size}", icon="💾") 
+    
+if radio_option=="Update Password": 
+    st.subheader("Update Password 🔄")
+    st.markdown('#####')   
+    if db_size>0: 
+        up_app = st.selectbox('Select an Account you want to update 👇', app_names) 
+        st.markdown('####')
+        new_pass_1 = st.text_input('New Password ', 'new123')
+        new_pass_2 = st.text_input('Confirm New Password', 'new123')
+        if new_pass_1==new_pass_2:
+                          
+            if st.button('Update ⚡️', use_container_width=True):
+                try:
+                    update_password(up_app,new_pass_1)
+                    st.success(f"{up_app}'s password is updated!", icon="✅")
+                except:
+                    st.info(' Database is Empty. Go to Create to add Data ⬅️', icon="ℹ️")    
+        else:
+            st.warning("Password don't mztch! Try Again.", icon="⚠️")
+    else:
+        st.info('Database is Empty. Go to Add Account to add Data ⬅️', icon="ℹ️")
    
-if radio_option=="Delete Credential":    
+if radio_option=="Delete Account":
+    st.subheader("Delete Credential 🗑️")  
+    st.markdown("#####")     
     if db_size>0: 
         agree = st.checkbox('View Full Database')
         if agree:
@@ -124,5 +151,5 @@ if radio_option=="Delete Credential":
             except:
                 st.info(' Database is Empty. Go to Create to add Data ⬅️', icon="ℹ️")             
     else:
-        st.info(' Database is Empty. Go to Create to add Data ⬅️', icon="ℹ️")
+        st.info('Database is Empty. Go to Add Account to add Data ⬅️', icon="ℹ️")
         
