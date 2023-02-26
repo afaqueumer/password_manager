@@ -74,11 +74,9 @@ if radio_option=="Home":
         st.markdown("#####")        
         cred = get_cred_by_app(option)
         with st.container():    
-            col1, col2 = st.columns(2)
-            col1.text(f"Username 👤")
-            col1.code(f"{cred[1]}", language="python")
-            col2.text(f"Password 🔑")
-            col2.code(f"{cred[2]}", language="python")    
+            st.text(f"Username 👤")
+            st.code(f"{cred[1]}", language="python")
+            st.text_input('Password 🔑', value=cred[2], type="password",)    
             st.markdown("####")
             url = cred[4]   
             if st.button('Launch 🚀', use_container_width=True):
@@ -97,7 +95,7 @@ if radio_option=="Add Account":
     st.markdown("####")    
     app_name = st.text_input('Application 📱', 'Twitter')
     user_name = st.text_input('User Name 👤', 'tweety')
-    pass_word = st.text_input('Password 🔑', 'pass123')
+    pass_word = st.text_input('Password 🔑', 'pass123', type="password",)
     email = st.text_input('Email 📧', 'tweety@xyz.com')
     url = st.text_input('Website 🔗', 'twitter.com')
     st.markdown("####")
@@ -117,8 +115,8 @@ if radio_option=="Update Password":
     if db_size>0: 
         up_app = st.selectbox('Select an Account you want to update 👇', app_names) 
         st.markdown('####')
-        new_pass_1 = st.text_input('New Password ', 'new123')
-        new_pass_2 = st.text_input('Confirm New Password', 'new123')
+        new_pass_1 = st.text_input('New Password ', 'new123', type="password",)
+        new_pass_2 = st.text_input('Confirm New Password', 'new123', type="password",)
         if new_pass_1==new_pass_2:
                           
             if st.button('Update ⚡️', use_container_width=True):
@@ -128,7 +126,7 @@ if radio_option=="Update Password":
                 except:
                     st.info(' Database is Empty. Go to Create to add Data ⬅️', icon="ℹ️")    
         else:
-            st.warning("Password don't mztch! Try Again.", icon="⚠️")
+            st.warning("Password don't match! Try Again.", icon="⚠️")
     else:
         st.info('Database is Empty.', icon="ℹ️")
    
@@ -138,7 +136,7 @@ if radio_option=="Delete Account":
     if db_size>0: 
         agree = st.checkbox('View Full Database')
         if agree:
-            c.execute("select * from pwd_mgr")
+            c.execute("select app_name, email_address, url from pwd_mgr")
             results = c.fetchall()
             st.table(results)        
         st.markdown('#####')      
