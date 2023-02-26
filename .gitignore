@@ -1,1 +1,5 @@
 *Db.*
+*.db
+pwd.db
+pipfile
+Pipfile.lock
