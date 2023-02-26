@@ -90,7 +90,7 @@ if radio_option=="Home":
             st.text(f"URL")
             st.code(f"{cred[4]}", language="python")
     else:
-        st.info('Database is Empty. Go to Add Account to add Data ⬅️', icon="ℹ️")
+        st.info('Database is Empty.', icon="ℹ️")
 
 if radio_option=="Add Account": 
     st.subheader("Add New Credential 🗝️")
@@ -130,7 +130,7 @@ if radio_option=="Update Password":
         else:
             st.warning("Password don't mztch! Try Again.", icon="⚠️")
     else:
-        st.info('Database is Empty. Go to Add Account to add Data ⬅️', icon="ℹ️")
+        st.info('Database is Empty.', icon="ℹ️")
    
 if radio_option=="Delete Account":
     st.subheader("Delete Credential 🗑️")  
@@ -151,5 +151,5 @@ if radio_option=="Delete Account":
             except:
                 st.info(' Database is Empty. Go to Create to add Data ⬅️', icon="ℹ️")             
     else:
-        st.info('Database is Empty. Go to Add Account to add Data ⬅️', icon="ℹ️")
+        st.info('Database is Empty.', icon="ℹ️")
         
